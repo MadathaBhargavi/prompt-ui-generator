@@ -1,14 +1,23 @@
 {
   "name": "prompt-ui-generator",
   "version": "1.0.0",
+  "description": "AI-powered Prompt UI Generator using Groq",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "keywords": [
+    "ai",
+    "ui-generator",
+    "groq",
+    "express"
+  ],
+  "author": "Bhargavi",
+  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "groq-sdk": "^1.4.1"
+    "groq-sdk": "^1.4.0"
   }
 }
