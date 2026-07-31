@@ -2,13 +2,11 @@ const promptBox = document.getElementById("prompt");
 const counter = document.getElementById("count");
 const history = document.getElementById("history");
 
-// Character Counter
 promptBox.addEventListener("input", () => {
     counter.innerText = promptBox.value.length;
 });
 
 
-// Generate UI
 async function generateUI() {
 
     const prompt = promptBox.value.trim();
@@ -54,10 +52,8 @@ async function generateUI() {
 
         const data = await response.json();
 
-        // Show generated UI
         iframe.srcdoc = data.html;
 
-        // Save prompt history
         const li = document.createElement("li");
 
         li.innerText = prompt;
@@ -83,7 +79,6 @@ async function generateUI() {
 }
 
 
-// Clear Prompt
 function clearPrompt() {
 
     promptBox.value = "";
@@ -92,7 +87,6 @@ function clearPrompt() {
 }
 
 
-// Copy Generated HTML
 function copyHTML() {
 
     const html =
@@ -104,7 +98,6 @@ function copyHTML() {
 }
 
 
-// Download Generated HTML
 function downloadHTML() {
 
     const html =

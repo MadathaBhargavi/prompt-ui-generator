@@ -6,14 +6,6 @@
   "scripts": {
     "start": "node server.js"
   },
-  "keywords": [
-    "ai",
-    "ui-generator",
-    "groq",
-    "express"
-  ],
-  "author": "Bhargavi",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
