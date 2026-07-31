@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const Groq = require("groq-sdk");
 
 const app = express();
@@ -8,24 +9,28 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Static files serve cheyyadaniki
+app.use(express.static(__dirname));
+
+// Home route
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
+
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
 });
 
+// Generate UI route
 app.post("/generate", async (req, res) => {
-
     try {
-
         const prompt = req.body.prompt;
 
         const start = Date.now();
 
         const completion = await groq.chat.completions.create({
-
             model: "llama-3.3-70b-versatile",
-
             messages: [
-
                 {
                     role: "system",
                     content: `
@@ -46,54 +51,43 @@ Rules:
 10. Return HTML only.
 `
                 },
-
                 {
                     role: "user",
                     content: prompt
                 }
-
             ]
-
         });
 
         const end = Date.now();
 
         res.json({
-
             html: completion.choices[0].message.content,
-
             time: ((end - start) / 1000).toFixed(2),
-
             model: "Llama 3.3 70B",
-
             status: "Connected"
-
         });
 
-    }
-
-    catch (error) {
-
-        console.log(error);
+    } catch (error) {
+        console.error(error);
 
         res.status(500).json({
-
             html: "<h2 style='color:red'>Error generating UI</h2>",
-
             time: "0",
-
             model: "Unknown",
-
             status: "Disconnected"
-
         });
-
     }
-
 });
 
-app.listen(5000, () => {
+// Health check route
+app.get("/health", (req, res) => {
+    res.json({
+        status: "Server Running"
+    });
+});
 
-    console.log("🚀 Server running at http://localhost:5000");
+const PORT = process.env.PORT || 5000;
 
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });
