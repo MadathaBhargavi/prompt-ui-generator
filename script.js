@@ -32,28 +32,28 @@ async function generateUI() {
     try {
 
         const response = await fetch(
-    "prompt-ui-generator.vercel.app/generate",
+            "https://prompt-ui-generator.vercel.app/api/generate",
             {
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json"
                 },
-
                 body: JSON.stringify({
                     prompt: prompt
                 })
             }
         );
 
-        if (!response.ok) {
-            throw new Error("Server error");
-        }
-
         const data = await response.json();
 
+        if (!response.ok) {
+            throw new Error(data.error || "API request failed");
+        }
+
+        // Display generated HTML
         iframe.srcdoc = data.html;
 
+        // Add prompt to history
         const li = document.createElement("li");
 
         li.innerText = prompt;
@@ -62,7 +62,7 @@ async function generateUI() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error("API Error:", error);
 
         iframe.srcdoc = `
             <div style="
@@ -71,8 +71,8 @@ async function generateUI() {
                 font-family:Arial;
                 text-align:center;
             ">
-                <h2>❌ Cannot connect to server.</h2>
-                <p>Please check your backend.</p>
+                <h2>❌ Error generating UI</h2>
+                <p>${error.message}</p>
             </div>
         `;
     }
